@@ -639,6 +639,9 @@ class SSViewer implements Flushable
         $lastEdited = filemtime($template ?? '');
 
         if (!file_exists($cacheFile ?? '') || filemtime($cacheFile ?? '') < $lastEdited) {
+            $logger = Injector::inst()->get( \Psr\Log\LoggerInterface::class . '.wse-debug');
+            $logger->error('Template cachefile not found:' . $cacheFile);
+            
             $content = file_get_contents($template ?? '');
             $content = $this->parseTemplateContent($content, $template);
 
